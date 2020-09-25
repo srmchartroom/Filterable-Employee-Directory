@@ -1,0 +1,22 @@
+.footer {
+    min-height: 50px;
+    background: #000;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    min-width: 100%;
+  }
+  
+  .footer span {
+    position: absolute;
+    color: #fff;
+    margin-right: 5rem;
+    bottom: 0;
+    right: 0;
+    /* left: 0;
+    right: 0; */
+    padding: 0.5rem;
+    vertical-align: text-top;
+    background: #000;
+  }
+  
