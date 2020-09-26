@@ -1,6 +1,7 @@
 import React from "react";
 import "./style.css";
 
+// Header is a static, stateless functional component
 function Header() {
     return (
         <div className="jumbotron jumbotron-fluid">
