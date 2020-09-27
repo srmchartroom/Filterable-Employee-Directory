@@ -20,25 +20,127 @@ class App extends Component {
     API.getEmployees()
       .then((res) => {
         // this.setState is a JSON objest
-        this.setState({
-          presortEmployees: res.data.results,
-          ascendNameEmployees: res.data.results.sort((a, b) => {
-            return ((a.name.last < b.name.last) ? 1 : ((a.name.last > b.name.last) ? -1 : 0));
-          }),
-          ascendDobEmployees: res.data.results.sort((a, b) => {
-            return ((a.dob < b.dob) ? 1 : ((a.dob > b.dob) ? -1 : 0));
-          }),
-          descendNameEmployees: res.data.results.sort((a, b) => {
-            return ((a.name.last > b.name.last) ? 1 : ((a.name.last < b.name.last) ? -1 : 0));
-          }),
-          descendDobEmployees: res.data.results.sort((a, b) => {
-            return ((a.dob > b.dob) ? 1 : ((a.dob < b.dob) ? -1 : 0));
-          })
-        })
+        this.setState(
+          {
+            presortEmployees: this.presort(res)
+            ,
+            ascendNameEmployees: this.namesortAsc(res)
+            ,
+            descendNameEmployees: this.namesortDesc(res)
+            ,
+            ascendDobEmployees: this.dobsortAsc(res)
+            ,
+            descendDobEmployees: this.dobsortDesc(res)
+          }
+        )
       })
       .catch(err => console.log(err));
   };
 
+  presort = ((input) => {
+    const data = input;
+    let employees = data.sort((a, b) => {
+      return a.name > b.name ? 1 : (a.name < b.name ? -1 : 0);
+    });
+    employees = employees.map(employee => {
+      return {
+        name: employee.name,
+        picture: employee.picture,
+        phone: employee.phone,
+        email: employee.email,
+        dob: employee.dob,
+        compareDob: employee.compareDob,
+        age: employee.dob.age,
+        alphaOrder: employee.alphaOrder,
+        key: employee.key
+      }
+    });
+    return employees;
+  });
+
+  namesortAsc = ((input) => {
+    const data = input;
+    let employees = data.sort((a, b) => {
+      return a.name > b.name ? 1 : (a.name < b.name ? -1 : 0);
+    });
+    employees = employees.map(employee => {
+      return {
+        name: employee.name,
+        picture: employee.picture,
+        phone: employee.phone,
+        email: employee.email,
+        dob: employee.dob,
+        compareDob: employee.compareDob,
+        age: employee.age,
+        alphaOrder: employee.alphaOrder,
+        key: employee.key
+      }
+    });
+    return employees;
+  });
+
+  namesortDesc = ((input) => {
+    const data = input;
+    let employees = data.sort((a, b) => {
+      return a.name < b.name ? 1 : (a.name > b.name ? -1 : 0);
+    });
+    employees = employees.map(employee => {
+      return {
+        name: employee.name,
+        picture: employee.picture,
+        phone: employee.phone,
+        email: employee.email,
+        dob: employee.dob,
+        compareDob: employee.compareDob,
+        age: employee.age,
+        alphaOrder: employees.alphaOrder,
+        key: employee.key
+      }
+    });
+    return employees;
+  });
+
+  dobsortAsc = ((input) => {
+    const data = input;
+    let employees = data.sort((a, b) => {
+      return a.compareDob > b.compareDob ? 1 : (a.compareDob < b.compareDob ? -1 : 0);
+    });
+    employees = employees.map(employee => {
+      return {
+        name: employee.name,
+        picture: employee.picture,
+        phone: employee.phone,
+        email: employee.email,
+        dob: employee.dob,
+        compareDob: employee.compareDob,
+        age: employee.age,
+        alphaOrder: employees.alphaOrder,
+        key: employee.key
+      }
+    });
+    return employees;
+  });
+
+  dobsortDesc = ((input) => {
+    const data = input;
+    let employees = data.sort((a, b) => {
+      return a.compareDob < b.compareDob ? 1 : (a.compareDob > b.compareDob ? -1 : 0);
+    });
+    employees = employees.map(employee => {
+      return {
+        name: employee.name,
+        picture: employee.picture,
+        phone: employee.phone,
+        email: employee.email,
+        dob: employee.dob,
+        compareDob: employee.compareDob,
+        age: employee.age,
+        alphaOrder: employee.alphaOrder,
+        key: employee.key
+      }
+    });
+    return employees;
+  });
 
   render() {
     console.log(this.state);
@@ -47,6 +149,7 @@ class App extends Component {
         <Wrapper>
           <Header />
           <SearchForm />
+          {/* <EmployeeList presortEmployees={this.state.presortEmployees} /> */}
           <EmployeeList presortEmployees={this.state.presortEmployees} ascendNameEmployees={this.state.ascendNameEmployees} ascendDobEmployees={this.state.ascendDobEmployees} descendNameEmployees={this.state.descendNameEmployees} descendDobEmployees={this.state.descendDobEmployees} />
           <Footer />
         </Wrapper>
@@ -55,5 +158,8 @@ class App extends Component {
   }
 }
 
-
 export default App;
+
+
+
+
