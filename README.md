@@ -36,7 +36,7 @@ React-based Filterable Employee Directory. The application leaverages `node.js`,
 4. Install the package.json with `npm install` or simply `npm i`.
 5. After any edits or updates, run `npm build` to compile the final application.
 
-### You can see a live/deployed version of this application at: [LINK FORTHCOMING]
+### You can see a live/deployed version of this application at: [https://srmchartroom.github.io/Filterable-Employee-Directory/]https://srmchartroom.github.io/Filterable-Employee-Directory/
 
 
 ## Usage
