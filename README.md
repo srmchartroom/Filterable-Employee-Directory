@@ -43,7 +43,7 @@ React-based Filterable Employee Directory. The application leaverages `node.js`,
 
 The below provides a demo of the Filterable Employee Directory application. Click the image below to view full screen gif.
 
-[![OVERVIEW: Filterable React-based Employee Directory](https://chartroomcreative.com/gitassets/react-employee-directory.gif)](https://chartroomcreative.com/gitassets/react-employee-directory.gif)
+[![OVERVIEW: Filterable React-based Employee Directory](./react-employee-directory.gif)](https://chartroomcreative.com/gitassets/react-employee-directory.gif)
 
 ## License
 
