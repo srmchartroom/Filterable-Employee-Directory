@@ -1,11 +1,8 @@
 import React, { Component } from "react";
 import Wrapper from "./components/Wrapper";
-import Header from "./components/Header";
-import SearchForm from "./components/SearchForm";
 import EmployeeList from "./components/EmployeeList";
 import Footer from "./components/Footer";
 import API from "./utils/API";
-
 
 class App extends Component {
   state = {
@@ -143,14 +140,11 @@ class App extends Component {
   });
 
   render() {
-    console.log(this.state);
+    // console.log(this.state);
     return (
-      <div>
+      <div className="container-fluid mx-0 px-0">
         <Wrapper>
-          <Header />
-          <SearchForm />
-          {/* <EmployeeList presortEmployees={this.state.presortEmployees} /> */}
-          <EmployeeList presortEmployees={this.state.presortEmployees} ascendNameEmployees={this.state.ascendNameEmployees} ascendDobEmployees={this.state.ascendDobEmployees} descendNameEmployees={this.state.descendNameEmployees} descendDobEmployees={this.state.descendDobEmployees} />
+          <EmployeeList dobsortDesc={this.dobsortDesc} dobsortAsc={this.dobsortAsc} namesortDesc={this.namesortDesc} namesortAsc={this.namesortAsc} presortEmployees={this.state.presortEmployees} ascendNameEmployees={this.state.ascendNameEmployees} ascendDobEmployees={this.state.ascendDobEmployees} descendNameEmployees={this.state.descendNameEmployees} descendDobEmployees={this.state.descendDobEmployees} />
           <Footer />
         </Wrapper>
       </div >

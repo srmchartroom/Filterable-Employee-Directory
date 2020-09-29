@@ -1,47 +1,17 @@
 import React, { useState, useEffect } from "react";
 import "./style.css";
 import EmployeeItem from "../EmployeeItem";
+import Header from "../Header";
+import SearchForm from "../SearchForm";
 // import API from "../../utils/API";
 
 function EmployeeList(props) {
-    const [nameSortDirection, setNameSortDirection] = useState('ascend');
-    const [dobSortDirection, setDobSortDirection] = useState('ascend');
-    const [sortedEmployees, setSortedEmployees] = useState(props.presortEmployees);
+    const [nameSortDirection, setNameSortDirection] = useState('descend');
+    const [dobSortDirection, setDobSortDirection] = useState('descend');
+    const [sortedEmployees, setSortedEmployees] = useState([]);
+    const [search, setSearch] = useState('');
 
-    useEffect(() => {
-        setSortedEmployees(props.presortEmployees);
-    }, [props]);
-
-    const handleNameSortArrow = () => {
-        if (nameSortDirection === "descend") {
-            setNameSortDirection('ascend');
-            setSortedEmployees(props.descendNameEmployees);
-            return;
-        } else {
-            // if (nameSortDirection === "ascend") {
-            setNameSortDirection('descend');
-            setSortedEmployees(props.ascendNameEmployees);
-            return;
-        }
-    }
-
-    const handleDobSortArrow = () => {
-        if (dobSortDirection === "descend") {
-            setDobSortDirection('ascend');
-            setSortedEmployees(props.descendDobEmployees);
-            return;
-        } else {
-            // if (dobSortDirection === "ascend") {
-            setDobSortDirection('descend');
-            setSortedEmployees(props.ascendDobEmployees);
-            return;
-        }
-    }
-
-    const renderEmployees = () => {
-        console.log(sortedEmployees);
-        console.log(props.presortEmployees);
-
+    const renderEmployees = (sortedEmployees) => {
         return sortedEmployees.map(employee => (
             <EmployeeItem
                 key={employee.key}
@@ -50,161 +20,130 @@ function EmployeeList(props) {
         ))
     }
 
+    useEffect(() => {
+        setSortedEmployees(props.presortEmployees);
+        // setSearch('')
+        // renderEmployees(sortedEmployees);
+    }, [props]);
+
+    const handleNameSortArrow = () => {
+        if (nameSortDirection === "descend" && !search) {
+            setNameSortDirection('ascend');
+            setSortedEmployees(props.descendNameEmployees);
+            return;
+        }
+        else if (nameSortDirection === "descend" && search) {
+            setNameSortDirection('ascend');
+            const descSort = props.namesortDesc;
+            const descSorted = descSort(sortedEmployees);
+            return setSortedEmployees(descSorted);
+        } else if (nameSortDirection === "ascend" && !search) {
+            setNameSortDirection('descend');
+            setSortedEmployees(props.ascendNameEmployees);
+            return;
+        } else if (nameSortDirection === "ascend" && search) {
+            setNameSortDirection('descend');
+            const ascSort = props.namesortAsc;
+            const ascSorted = ascSort(sortedEmployees);
+            return setSortedEmployees(ascSorted);
+        } else {
+            return;
+        }
+    }
+
+    const handleDobSortArrow = () => {
+        if (dobSortDirection === "descend" && !search) {
+            setDobSortDirection('ascend');
+            setSortedEmployees(props.descendDobEmployees);
+            return;
+        } else if (dobSortDirection === "descend" && search) {
+            setDobSortDirection('ascend');
+            const descSort = props.dobsortDesc;
+            const descSorted = descSort(sortedEmployees);
+            return setSortedEmployees(descSorted);
+        } else if (dobSortDirection === "ascend" && !search) {
+            setDobSortDirection('descend');
+            setSortedEmployees(props.ascendDobEmployees);
+            return;
+        } else if (dobSortDirection === "ascend" && search) {
+            setDobSortDirection('descend');
+            const ascSort = props.dobsortAsc;
+            const ascSorted = ascSort(sortedEmployees);
+            return setSortedEmployees(ascSorted);
+        }
+    }
+
+
+    const handleInputChange = ((event) => {
+        setSearch(event.target.value);
+        // console.log("handleFormSubmit > sortedEmployees: " + [sortedEmployees]);
+        // if (search === "") {
+        //     return renderEmployees(props.presortEmployees);
+        // } else {
+        //     return renderEmployees(sortedEmployees);
+    });
+
+
+    const handleSearch = (search) => {
+        console.log("handleSearch > search: " + search);
+        const newSort = sortedEmployees.filter(employee => {
+            return employee.name.includes(search);
+        })
+        if (newSort.length < 1) {
+            alert("No employees match. Please reset and try again.")
+            setSearch("");
+            return setSortedEmployees(props.presortEmployees);
+        }
+        return setSortedEmployees(newSort);
+    };
+
+    const handleFormSubmit = ((event) => {
+        event.preventDefault();
+        handleSearch(search);
+        console.log("handleFormSubmit > sortedEmployees: " + [sortedEmployees]);
+        return renderEmployees(sortedEmployees);
+    });
+
+    const handleFormReset = ((event) => {
+        event.preventDefault();
+        setSearch("");
+        setSortedEmployees(props.presortEmployees);
+        return renderEmployees(props.presortEmployees);
+    })
+
     return (
-        <div className="container">
-            <div className="row">
-                <div className="col">
-                    <span><strong>Employee Image</strong></span>
-                </div>
-                <div className="col">
-                    <button onClick={handleNameSortArrow} className="btn" sort={nameSortDirection}>
-                        <span>{nameSortDirection === 'ascend' ? <i className="fas fa-caret-up"></i> : <i className="fas fa-caret-down"></i>}</span>
-                    </button>
-                    {' '}
-                    <span><strong>Employee Name</strong></span>
-                </div>
-                <div className="col">
-                    <span><strong>Phone</strong></span>
-                </div>
-                <div className="col">
-                    <span><strong>Email</strong></span>
-                </div>
-                <div className="col">
-                    <button onClick={handleDobSortArrow} className="btn" sort={dobSortDirection}>
-                        <span>{dobSortDirection === 'ascend' ? <i className="fas fa-caret-up"></i> : <i className="fas fa-caret-down"></i>}</span>
-                    </button>
-                    {' '}
-                    <span><strong>Date of Birth</strong></span>
-                </div>
+        <div className="container-fluid mx-0 px-0">
+            <div className="container-fluid mx-0 px-0">
+                <Header />
             </div>
-            <div>
-                {renderEmployees()}
+            <div className="container">
+                <SearchForm handleInputChange={handleInputChange} handleFormSubmit={handleFormSubmit} handleFormReset={handleFormReset} search={search} />
+                <div className="row mt-0 border-top">
+                    <div className="col col-md-2 py-3 text-center">
+                        <span><strong>Employee Image</strong></span>
+                    </div>
+                    <div className="col col-md-3 py-3 text-center border-left">
+                        <button onClick={handleNameSortArrow} className="btn p-0 m-0 sortBtn" sort={nameSortDirection}>
+                            <span><strong>Employee Name&nbsp;&nbsp;</strong>{nameSortDirection === 'ascend' ? <i className="fas fa-caret-up"></i> : <i className="fas fa-caret-down"></i>}</span>
+                        </button>
+                    </div>
+                    <div className="col col-md-2 py-3 text-center border-left">
+                        <span><strong>Phone</strong></span>
+                    </div>
+                    <div className="col col-md-3 py-3 text-center border-left">
+                        <span><strong>Email</strong></span>
+                    </div>
+                    <div className="col col-md-2 py-3 text-center border-left">
+                        <button onClick={handleDobSortArrow} className="btn p-0 m-0 sortBtn" sort={dobSortDirection}>
+                            <span><strong>Date of Birth&nbsp;&nbsp;</strong></span><span>{dobSortDirection === 'ascend' ? <i className="fas fa-caret-up"></i> : <i className="fas fa-caret-down"></i>}</span>
+                        </button>
+                    </div>
+                </div>
+
+                {renderEmployees(sortedEmployees)}
             </div>
         </div>
     );
 }
 
-
 export default EmployeeList;
-
-// import React, { useState, useEffect } from "react";
-// import "./style.css";
-// import EmployeeItem from "../EmployeeItem";
-// // import EmployeeContext from "../../utils/EmployeeContext";
-
-
-// function EmployeeList(props) {
-//     const [filteredEmployees, setFilteredEmployees] = useState([]);
-//     const [filteredByName, setFilteredByName] = useState([]);
-//     const [filteredByDob, setFilteredByDob] = useState([]);
-
-//     console.log("useState:filteredEmployees");
-//     console.log(filteredEmployees);
-//     console.log("useState:filteredByName");
-//     console.log(filteredByName);
-//     console.log("useState:filteredByDob");
-//     console.log(filteredByDob);
-
-
-//     useEffect(() => {
-//         setFilteredEmployees(props.presortEmployees);
-//         setFilteredByName(props.presortEmployees);
-//         setFilteredByDob(props.dobFiltered);
-
-//     }, [filteredEmployees, props.presortEmployees, props.dobFiltered, props.revDobFiltered]);
-
-
-//     // const ascendBtn = "fas fa-caret-up"
-//     // const descendBtn = "fas fa-caret-down"
-
-//     // const nameFiltered = (() => {
-//     //     return (
-//     //         [props.presortEmployees].sort((a, b) => {
-//     //             return b.alphaOrder - a.alphaOrder;
-//     //         })
-//     //     )
-//     // });
-
-//     // console.log("NameFiltered");
-//     // console.log(nameFiltered());
-
-//     // const revNameFiltered = [nameFiltered()].reverse();
-//     // console.log("revNameFiltered");
-//     // console.log(revNameFiltered);
-
-
-//     console.log("dobFiltered");
-//     console.log(props.dobFiltered);
-
-//     // const revDobFiltered = (() => {
-//     //     let dobEmp = props.presortEmployees
-//     //     let dobEmpSort = [dobEmp].sort((a, b) => {
-//     //         return a.compareDob < b.compareDob ? 1 : (a.compareDob > b.compareDob ? -1 : 0)
-//     //     });
-//     //     return dobEmpSort;
-//     // })
-
-
-
-//     console.log("revDobFiltered");
-//     console.log(props.revDobFiltered);
-
-
-//     // console.log('filteredByDOB:');
-//     // console.log([state.filteredByDob]);
-//     // console.log("filteredByName:");
-//     // console.log([state.filteredByName]);
-//     // console.log("filteredEmployees:");
-//     // console.log([state.filteredEmployees]);
-
-
-
-//     const renderEmployees = (() => {
-//         [filteredEmployees].map(employee => (
-//             <EmployeeItem
-//                 key={employee.key}
-//                 employee={employee}
-//             />
-//         ))
-//     })
-
-//     return (
-//         <div className="container container-fluid" >
-//             <div className="row">
-//                 <div className="col">
-//                     <span><strong>Employee Image</strong></span>
-//                 </div>
-//                 <div className="col">
-//                     <button onClick={() => setFilteredByName("setName")} className="btn mt-3" id="nameArrowBtn" >
-//                         {/* <span>{state.filteredEmployees === revNameFiltered ? <i className="fas fa-caret-up"></i> : <i className="fas fa-caret-down"></i>}</span> */}
-//                         <span><i className="fas fa-caret-up"></i></span>
-//                     </button>
-//                     {' '}
-//                     <span><strong>Employee Name</strong></span>
-//                 </div>
-//                 <div className="col">
-//                     <span><strong>Phone</strong></span>
-//                 </div>
-//                 <div className="col">
-//                     <span><strong>Email</strong></span>
-//                 </div>
-//                 <div className="col">
-//                     <button onClick={() => setFilteredByDob(filteredEmployees === props.dobFiltered ? props.revDobFiltered : props.dobFiltered)} className="btn mt-3" id="dobArrowBtn" >
-//                         {/* <span>{state.filteredEmployees === [revDobFiltered] ? <i className="fas fa-caret-up"></i> : <i className="fas fa-caret-down"></i>}</span> */}
-//                         <span><i className="fas fa-caret-up"></i></span>
-//                     </button>
-//                     {' '}
-//                     <span><strong>Date of Birth</strong></span>
-//                 </div>
-//             </div>
-//             <div>
-//                 {renderEmployees()}
-
-//             </div>
-//         </div >
-//     );
-// }
-// // }
-
-
-// export default EmployeeList;

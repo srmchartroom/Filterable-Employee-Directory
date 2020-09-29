@@ -1,0 +1,7 @@
+.sortBtn, 
+.sortBtn:hover, 
+.sortBtn:active, 
+.sortBtn:visited {
+    border: 0;
+    box-shadow: none !important;
+}
