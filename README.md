@@ -16,10 +16,7 @@
 
 ## Description
 
-React-based Filterable Employee Directory. Further description and details forthcoming.
-
-
-The application leaverages `node.js`, `ReactJS` and standard ES6 `JavaScript`.
+React-based Filterable Employee Directory. The application leaverages `node.js`, `ReactJS` and standard ES6 `JavaScript`. Based on the powerful ReactJS framework this uses the inherent OOP with the "V"-focused MVC to create a fast filterable, sortable, and searchable employee directory with consumable data based on API (sample employees derived from the random.me API).
 
 ## Table of Contents
 
@@ -36,16 +33,17 @@ The application leaverages `node.js`, `ReactJS` and standard ES6 `JavaScript`.
 1. Download or clone this project and save it to your machine.
 2. Be sure to update the connection and environment variables if you intend to deploy the application somewhere other than a local install.
 3. From Bash, Terminal, or whichever CLI you use, navigate to the directory where you've saved the application files.
-5. Install the package.json with `npm install` or simply `npm i`.
+4. Install the package.json with `npm install` or simply `npm i`.
+5. After any edits or updates, run `npm build` to compile the final application.
 
 ### You can see a live/deployed version of this application at: [LINK FORTHCOMING]
 
 
 ## Usage
 
-The below provides a demo of the Filterable Employee Directory application. Click the image below to view full screen .mp4.
+The below provides a demo of the Filterable Employee Directory application. Click the image below to view full screen gif.
 
-[![OVERVIEW: Filterable React-based Employee Directory](./filterable-employee-directory.gif)](https://chartroomcreative.com/gitassets/filterable-employee-directory.mp4)
+[![OVERVIEW: Filterable React-based Employee Directory](https://chartroomcreative.com/gitassets/react-employee-directory.gif)](https://chartroomcreative.com/gitassets/react-employee-directory.gif)
 
 ## License
 
